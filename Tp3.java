@@ -30,9 +30,8 @@ public class Tp3 {
         // Build edges as an array first, then heapify (fixheap) for best complexity.
         List<Edge> edges = new ArrayList<>();
 
-        // Do stuff.
+        // Read input.
         for (String line : lines) {
-
             switch (state) {
                 case READ_NODES -> {
                     if (line.equals("---")){
@@ -69,8 +68,6 @@ public class Tp3 {
             while (!pq.isEmpty()) {
                 System.out.println(pq.poll());
             }
-
-            
         }
 
         String result = "[TO BE IMPLEMENTED]";
