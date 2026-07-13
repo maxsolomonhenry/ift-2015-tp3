@@ -17,8 +17,8 @@ public class Tp3 {
         List<String> lines = Files.readAllLines(inputPath);
 
         // Do stuff.
-        if (DEBUG) {
-            for (String line : lines) {
+        for (String line : lines) {
+            if (DEBUG) {
                 System.out.println(line);
             }
         }
