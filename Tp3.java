@@ -30,8 +30,6 @@ public class Tp3 {
         // Build edges as an array first, then heapify (fixheap) for best complexity.
         List<Edge> edges = new ArrayList<>();
 
-        // PriorityQueue<Edge> edges = new PriorityQueue<>();
-
         // Do stuff.
         for (String line : lines) {
 
@@ -54,6 +52,8 @@ public class Tp3 {
             }
         }
 
+        PriorityQueue<Edge> pq = new PriorityQueue<>(edges);
+
         if (DEBUG) {
             System.out.println("\n=====\nNODES\n=====");
             for (Node node : nodes) {
@@ -64,6 +64,13 @@ public class Tp3 {
             for (Edge edge: edges) {
                 System.out.println(edge);
             }
+
+            System.out.println("\n==============\nEDGES (SORTED)\n==============");
+            while (!pq.isEmpty()) {
+                System.out.println(pq.poll());
+            }
+
+            
         }
 
         String result = "[TO BE IMPLEMENTED]";
