@@ -47,7 +47,7 @@ public class Tp3 {
                     }
                     edges.add(parseEdge(line));
                 }
-                case END -> { break; }
+                case END -> {}
             }
         }
 
