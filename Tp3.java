@@ -65,7 +65,7 @@ public class Tp3 {
         int totalWeight = 0;
         for (Edge edge : mst) {
             result.append(
-                String.format("%s\t%s %s %d\n",
+                String.format("%s\t%s\t%s\t%d\n",
                     edge.getLabel(), 
                     edge.getStart().getName(),
                     edge.getEnd().getName(),
@@ -117,8 +117,8 @@ public class Tp3 {
 
         return new Edge(
             parts[0],                   // label
-            new Node(start),         // start
-            new Node(end),         // end
+            new Node(start),            // start
+            new Node(end),              // end
             Integer.parseInt(parts[4])  // weight
         );
     }
