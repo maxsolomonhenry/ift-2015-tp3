@@ -58,10 +58,13 @@ public class Tp3 {
         
         StringBuilder result = new StringBuilder();
 
+        // Add nodes in alphabetical order.
         for (Node node : nodes) {
             result.append(node.getName() + "\n");
         }
 
+        // Add edges in sorted order by label then nodes. Also accumulate total
+        // weight.
         int totalWeight = 0;
         for (Edge edge : mst) {
             result.append(
@@ -75,9 +78,11 @@ public class Tp3 {
             totalWeight += edge.getWeight();
         }
 
+        // Print weight in required formatting.
         result.append("---\n");
         result.append(String.valueOf(totalWeight)).append("\n");
 
+        // Debugging for us as we go...
         if (DEBUG) {
             System.out.println("\n=====\nNODES\n=====");
             for (Node node : nodes) {
@@ -97,7 +102,6 @@ public class Tp3 {
             System.out.println("\n=====\nSAVED\n=====");
             System.out.print(result);
         }
-        
 
         // Write output.
         Files.writeString(outputPath, result);
