@@ -37,9 +37,6 @@ public class Node implements Comparable<Node>{
         return this.name.equals(((Node) other).getName());
     }
 
-    // Secondary comparator for alphabetical ordering.
-    public static Comparator<Node> BY_NAME = Comparator.comparing(Node::getName);
-
     @Override
     public int hashCode() {
         return this.name.hashCode();

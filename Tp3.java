@@ -54,7 +54,7 @@ public class Tp3 {
 
         // Sort for pretty printing.
         mst.sort(Edge.BY_NODE);
-        nodes.sort(Node.BY_NAME);
+        nodes.sort(null);
         
         StringBuilder result = new StringBuilder();
 
