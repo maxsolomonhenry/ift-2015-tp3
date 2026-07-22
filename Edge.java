@@ -7,13 +7,6 @@ public class Edge implements Comparable<Edge>{
     private Node end;
     private int weight;
 
-    // Custom comparator, starting with start node, then end node, then weight.        
-    public static final Comparator<Edge> COMPARE_BY_START_END_WEIGHT = 
-        Comparator.comparing(Edge::getStart)
-            .thenComparing(Edge::getEnd)
-            .thenComparingInt(Edge::getWeight);
-
-
     public Edge(String label, Node start, Node end, int weight) {
         this.label = label;
         this.start = start;
@@ -39,7 +32,8 @@ public class Edge implements Comparable<Edge>{
         return this.weight;
     }
 
-    // Chain comparators, starting with weight, then start node, then end node.
+    // Default comparator by weight first. Chain comparators, starting with 
+    // weight, then start node, then end node.
     @Override
     public int compareTo(Edge other) {
         return Comparator.comparingInt(Edge::getWeight)
@@ -47,6 +41,13 @@ public class Edge implements Comparable<Edge>{
             .thenComparing(Edge::getEnd)
             .compare(this, other);
     }
+
+    // Alternate comparator for nice printing order (by node).        
+    public static Comparator<Edge> BY_NODE = 
+        Comparator.comparing(Edge::getStart)
+            .thenComparing(Edge::getEnd)
+            .thenComparingInt(Edge::getWeight);
+
 
     @Override
     public String toString() {

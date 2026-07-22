@@ -1,3 +1,5 @@
+import java.util.Comparator;
+
 public class Node implements Comparable<Node>{
 
     private String name;
@@ -34,6 +36,9 @@ public class Node implements Comparable<Node>{
         // Compare names (the only property).
         return this.name.equals(((Node) other).getName());
     }
+
+    // Secondary comparator for alphabetical ordering.
+    public static Comparator<Node> BY_NAME = Comparator.comparing(Node::getName);
 
     @Override
     public int hashCode() {

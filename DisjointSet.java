@@ -1,4 +1,17 @@
 public class DisjointSet {
+    // A note that this class implements the canonincal disjoint set, as an 
+    // array of ints (representing elements) and an array of ranks. It uses
+    // path compression and merge by rank. 
+    //
+    // Because this code is very, _very_ standard, it resembles many other 
+    // implementations online, such as those might one find on github, or
+    // stack exchange, some of which we did consult when writing the code. 
+    // I tried to leave comments throughout to make it clear that we have an 
+    // understanding of the operations at hand.
+    //
+    // We decided to implement a bare DisjointSet class, and have this mapped 
+    // onto by a `Node` class, just to keep it as general as possible. Thanks.
+    
     private int[] parent;
     private int[] rank;
 

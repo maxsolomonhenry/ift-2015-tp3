@@ -23,8 +23,8 @@ public class Tp3 {
         List<String> lines = Files.readAllLines(inputPath);
         State state = State.READ_NODES;
 
-        // Build treeset of nodes for quick inorder printing
-        TreeSet<Node> nodes = new TreeSet<>();
+        // Build a list of nodes.
+        ArrayList<Node> nodes = new ArrayList<>();
 
         // Build edges as an array first, then heapify (fixheap) for best complexity.
         ArrayList<Edge> edges = new ArrayList<>();
@@ -50,21 +50,54 @@ public class Tp3 {
             }
         }
 
-        TreeSet<Edge> minSpanningTree = MST.applyKruskal(nodes, edges);
+        ArrayList<Edge> mst = MST.applyKruskal(nodes, edges);
+
+        // Sort for pretty printing.
+        mst.sort(Edge.BY_NODE);
+        nodes.sort(Node.BY_NAME);
+        
+        StringBuilder result = new StringBuilder();
+
+        for (Node node : nodes) {
+            result.append(node.getName() + "\n");
+        }
+
+        int totalWeight = 0;
+        for (Edge edge : mst) {
+            result.append(
+                String.format("%s\t%s %s %d\n",
+                    edge.getLabel(), 
+                    edge.getStart().getName(),
+                    edge.getEnd().getName(),
+                    edge.getWeight()
+                )
+            );
+            totalWeight += edge.getWeight();
+        }
+
+        result.append("---\n");
+        result.append(String.valueOf(totalWeight)).append("\n");
 
         if (DEBUG) {
             System.out.println("\n=====\nNODES\n=====");
             for (Node node : nodes) {
                 System.out.println(node);
             }
-    
+            
             System.out.println("\n=====\nEDGES\n=====");
             for (Edge edge: edges) {
                 System.out.println(edge);
             }
-        }
+            
+            System.out.println("\n=====\n MST \n=====");
+            for (Edge edge: mst) {
+                System.out.println(edge);
+            }
 
-        String result = "[TO BE IMPLEMENTED]";
+            System.out.println("\n=====\nSAVED\n=====");
+            System.out.print(result);
+        }
+        
 
         // Write output.
         Files.writeString(outputPath, result);
@@ -73,10 +106,19 @@ public class Tp3 {
 
     public static Edge parseEdge(String line) {
         String[] parts = line.trim().split("\\s+");
+
+        // Impose start/end nodes in alphabetical order.
+        String start = parts[2];
+        String end = parts[3];
+        if (start.compareTo(end) > 0) {
+            start = parts[3];
+            end = parts[2];
+        }
+
         return new Edge(
             parts[0],                   // label
-            new Node(parts[2]),         // start
-            new Node(parts[3]),         // end
+            new Node(start),         // start
+            new Node(end),         // end
             Integer.parseInt(parts[4])  // weight
         );
     }
