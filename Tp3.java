@@ -4,6 +4,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Tp3 {
@@ -23,11 +24,8 @@ public class Tp3 {
         List<String> lines = Files.readAllLines(inputPath);
         State state = State.READ_NODES;
 
-        // Build a list of nodes.
-        ArrayList<Node> nodes = new ArrayList<>();
-
-        // Build edges as an array first, then heapify (fixheap) for best complexity.
-        ArrayList<Edge> edges = new ArrayList<>();
+        // Init graph for storing the nodes and edges.
+        TreeMap<Node, TreeSet<Edge>> graph = new TreeMap<>();
 
         // Read input.
         for (String line : lines) {
@@ -36,37 +34,50 @@ public class Tp3 {
                     if (line.equals("---")){
                         state = State.READ_EDGES;
                         continue;
-                    }   
-                    nodes.add(new Node(line.trim()));
+                    }
+
+                    // Make an empty entry for this node.
+                    graph.put(new Node(line.trim()), new TreeSet<>());
                 }
                 case READ_EDGES -> {
                     if (line.equals("---")){
                         state = State.END;
                         continue;
                     }
-                    edges.add(parseEdge(line));
+                    Edge edge = parseEdge(line);
+                    if (!graph.containsKey(edge.getStart()) || 
+                        !graph.containsKey(edge.getEnd())){
+                        // Skip this edge, it doesn't belong in this graph.
+                        continue;
+                    }
+
+                    // Store twice because this is an undirected graph.
+                    graph.get(edge.getStart()).add(edge);
+                    graph.get(edge.getEnd()).add(edge);
                 }
                 case END -> {}
             }
         }
 
-        ArrayList<Edge> mst = MST.applyKruskal(nodes, edges);
-
-        // Sort for pretty printing.
-        mst.sort(Edge.BY_NODE);
-        nodes.sort(null);
-        
+        TreeMap<Node, TreeSet<Edge>> mst = MST.applyKruskal(graph);
         StringBuilder result = new StringBuilder();
 
         // Add nodes in alphabetical order.
-        for (Node node : nodes) {
+        for (Node node : mst.keySet()) {
             result.append(node.getName() + "\n");
         }
 
-        // Add edges in sorted order by label then nodes. Also accumulate total
-        // weight.
+        // Collect edges.
+        TreeSet<Edge> edges = new TreeSet<>();
+        for (TreeSet<Edge> outgoing : mst.values()) {
+            edges.addAll(outgoing);
+        }
+        ArrayList<Edge> list = new ArrayList<>(edges);
+        list.sort(Edge.BY_NODE);
+
+        // Add edges in sorted order by label then nodes. Also accumulate weight.
         int totalWeight = 0;
-        for (Edge edge : mst) {
+        for (Edge edge : list) {
             result.append(
                 String.format("%s\t%s\t%s\t%d\n",
                     edge.getLabel(), 
@@ -84,21 +95,6 @@ public class Tp3 {
 
         // Debugging for us as we go...
         if (DEBUG) {
-            System.out.println("\n=====\nNODES\n=====");
-            for (Node node : nodes) {
-                System.out.println(node);
-            }
-            
-            System.out.println("\n=====\nEDGES\n=====");
-            for (Edge edge: edges) {
-                System.out.println(edge);
-            }
-            
-            System.out.println("\n=====\n MST \n=====");
-            for (Edge edge: mst) {
-                System.out.println(edge);
-            }
-
             System.out.println("\n=====\nSAVED\n=====");
             System.out.print(result);
         }
@@ -111,18 +107,10 @@ public class Tp3 {
     public static Edge parseEdge(String line) {
         String[] parts = line.trim().split("\\s+");
 
-        // Impose start/end nodes in alphabetical order.
-        String start = parts[2];
-        String end = parts[3];
-        if (start.compareTo(end) > 0) {
-            start = parts[3];
-            end = parts[2];
-        }
-
         return new Edge(
             parts[0],                   // label
-            new Node(start),            // start
-            new Node(end),              // end
+            new Node(parts[2]),         // start
+            new Node(parts[3]),         // end
             Integer.parseInt(parts[4])  // weight
         );
     }

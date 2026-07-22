@@ -1,4 +1,4 @@
-import java.util.List;
+import java.util.Set;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -6,7 +6,7 @@ public class ConnectedComponents {
     private Map<Node, Integer> node2int = new HashMap<>();
     private DisjointSet sets;
 
-    public ConnectedComponents(List<Node> nodes) {
+    public ConnectedComponents(Set<Node> nodes) {
         sets = new DisjointSet(nodes.size());
 
         // // Create map of nodes -> int.
