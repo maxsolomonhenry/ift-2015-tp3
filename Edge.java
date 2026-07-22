@@ -7,6 +7,13 @@ public class Edge implements Comparable<Edge>{
     private Node end;
     private int weight;
 
+    // Custom comparator, starting with start node, then end node, then weight.        
+    public static final Comparator<Edge> COMPARE_BY_START_END_WEIGHT = 
+        Comparator.comparing(Edge::getStart)
+            .thenComparing(Edge::getEnd)
+            .thenComparingInt(Edge::getWeight);
+
+
     public Edge(String label, Node start, Node end, int weight) {
         this.label = label;
         this.start = start;

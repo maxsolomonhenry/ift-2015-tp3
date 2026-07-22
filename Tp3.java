@@ -3,9 +3,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.LinkedList;
 import java.util.ArrayList;
-import java.util.PriorityQueue;
+import java.util.TreeSet;
 
 public class Tp3 {
 
@@ -24,11 +23,11 @@ public class Tp3 {
         List<String> lines = Files.readAllLines(inputPath);
         State state = State.READ_NODES;
 
-        // Debugging (maybe not the best data structure for this).
-        List<Node> nodes = new LinkedList<>();
+        // Build treeset of nodes for quick inorder printing
+        TreeSet<Node> nodes = new TreeSet<>();
 
         // Build edges as an array first, then heapify (fixheap) for best complexity.
-        List<Edge> edges = new ArrayList<>();
+        ArrayList<Edge> edges = new ArrayList<>();
 
         // Read input.
         for (String line : lines) {
@@ -51,7 +50,7 @@ public class Tp3 {
             }
         }
 
-        PriorityQueue<Edge> pq = new PriorityQueue<>(edges);
+        TreeSet<Edge> minSpanningTree = MST.applyKruskal(nodes, edges);
 
         if (DEBUG) {
             System.out.println("\n=====\nNODES\n=====");
@@ -62,11 +61,6 @@ public class Tp3 {
             System.out.println("\n=====\nEDGES\n=====");
             for (Edge edge: edges) {
                 System.out.println(edge);
-            }
-
-            System.out.println("\n==============\nEDGES (SORTED)\n==============");
-            while (!pq.isEmpty()) {
-                System.out.println(pq.poll());
             }
         }
 
