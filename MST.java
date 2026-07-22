@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -7,11 +6,8 @@ public class MST {
     
     public static TreeMap<Node, TreeSet<Edge>> applyKruskal(TreeMap<Node, TreeSet<Edge>> graph){
 
-        // Collect all edges into a set, which will remove duplicates.
-        TreeSet<Edge> edges = new TreeSet<>();
-        for (TreeSet<Edge> outgoing : graph.values()) {
-            edges.addAll(outgoing);
-        }
+        // Collect all edges into a set which removes duplicates.
+        TreeSet<Edge> edges = Util.getUniqueEdges(graph);
 
         ConnectedComponents components = new ConnectedComponents(graph.keySet());
         PriorityQueue<Edge> edgesMinHeap = new PriorityQueue<>(edges);

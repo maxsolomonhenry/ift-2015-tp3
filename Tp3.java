@@ -67,11 +67,9 @@ public class Tp3 {
             result.append(node.getName() + "\n");
         }
 
-        // Collect edges.
-        TreeSet<Edge> edges = new TreeSet<>();
-        for (TreeSet<Edge> outgoing : mst.values()) {
-            edges.addAll(outgoing);
-        }
+        // Collect edges, ignoring duplicates.
+        TreeSet<Edge> edges = Util.getUniqueEdges(mst);
+
         ArrayList<Edge> list = new ArrayList<>(edges);
         list.sort(Edge.BY_NODE);
 
@@ -107,10 +105,18 @@ public class Tp3 {
     public static Edge parseEdge(String line) {
         String[] parts = line.trim().split("\\s+");
 
+        // Impose start/end nodes in alphabetical order.
+        String start = parts[2];
+        String end = parts[3];
+        if (start.compareTo(end) > 0) {
+            start = parts[3];
+            end = parts[2];
+        }
+
         return new Edge(
             parts[0],                   // label
-            new Node(parts[2]),         // start
-            new Node(parts[3]),         // end
+            new Node(start),            // start
+            new Node(end),              // end
             Integer.parseInt(parts[4])  // weight
         );
     }

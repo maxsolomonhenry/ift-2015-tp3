@@ -48,7 +48,6 @@ public class Edge implements Comparable<Edge>{
             .thenComparing(Edge::getEnd)
             .thenComparingInt(Edge::getWeight);
 
-
     @Override
     public String toString() {
         return String.format("Edge{label='%s',start=%s,end=%s,weight=%d}",
