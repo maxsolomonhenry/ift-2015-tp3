@@ -12,8 +12,7 @@ public class MST {
         PriorityQueue<Edge> edgesMinHeap = new PriorityQueue<>(edges);
 
         // Init the MST (should have same nodes as the input graph, by definition).
-        UndirectedGraph tree = new UndirectedGraph();
-        tree.addNodes(graph.getNodes());
+        UndirectedGraph tree = new UndirectedGraph(graph.getNodes());
 
         int numEdges = 0;
         while (numEdges < graph.getNumNodes() - 1){

@@ -7,8 +7,15 @@ public class UndirectedGraph {
     // The only property is private, completely encapsulated.
     private TreeMap<Node, TreeSet<Edge>> graph;
     
+    // Blank constructor (empty graph).
     public UndirectedGraph() {
         this.graph = new TreeMap<Node, TreeSet<Edge>>();
+    }
+
+    // Constructor based on given nodes.
+    public UndirectedGraph(Set<Node> nodes) {
+        this.graph = new TreeMap<Node, TreeSet<Edge>>();
+        addNodes(nodes);
     }
 
     // Add nodes one at a time, checking to see if the node isn't already there.
