@@ -1,5 +1,3 @@
-import java.util.Comparator;
-
 public class Node implements Comparable<Node>{
 
     private String name;
