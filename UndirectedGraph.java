@@ -11,9 +11,9 @@ public class UndirectedGraph {
         this.graph = new TreeMap<Node, TreeSet<Edge>>();
     }
 
-    // Add nodes one at a time.
+    // Add nodes one at a time, checking to see if the node isn't already there.
     public void addNode(Node node) {
-        graph.put(node, new TreeSet<>());
+        graph.putIfAbsent(node, new TreeSet<>());
     }
 
     // Add a set of nodes (useful to build a skeleton MST).
