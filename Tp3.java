@@ -25,7 +25,7 @@ public class Tp3 {
         State state = State.READ_NODES;
 
         // Init graph for storing the nodes and edges.
-        TreeMap<Node, TreeSet<Edge>> graph = new TreeMap<>();
+        UndirectedGraph graph = new UndirectedGraph();
 
         // Read input.
         for (String line : lines) {
@@ -37,7 +37,7 @@ public class Tp3 {
                     }
 
                     // Make an empty entry for this node.
-                    graph.put(new Node(line.trim()), new TreeSet<>());
+                    graph.addNode(new Node(line.trim()));
                 }
                 case READ_EDGES -> {
                     if (line.equals("---")){
@@ -45,37 +45,29 @@ public class Tp3 {
                         continue;
                     }
                     Edge edge = parseEdge(line);
-                    if (!graph.containsKey(edge.getStart()) || 
-                        !graph.containsKey(edge.getEnd())){
-                        // Skip this edge, it doesn't belong in this graph.
-                        continue;
-                    }
 
-                    // Store twice because this is an undirected graph.
-                    graph.get(edge.getStart()).add(edge);
-                    graph.get(edge.getEnd()).add(edge);
+                    // Store edge (stores duplicates and checks for valid nodes).
+                    graph.addEdge(edge);
                 }
                 case END -> {}
             }
         }
 
-        TreeMap<Node, TreeSet<Edge>> mst = MST.applyKruskal(graph);
+        UndirectedGraph mst = MST.applyKruskal(graph);
         StringBuilder result = new StringBuilder();
 
         // Add nodes in alphabetical order.
-        for (Node node : mst.keySet()) {
+        for (Node node : mst.getNodes()) {
             result.append(node.getName() + "\n");
         }
 
-        // Collect edges, ignoring duplicates.
-        TreeSet<Edge> edges = Util.getUniqueEdges(mst);
-
-        ArrayList<Edge> list = new ArrayList<>(edges);
-        list.sort(Edge.BY_NODE);
+        // Collect edges and sort.
+        ArrayList<Edge> edges = new ArrayList<>(mst.getUniqueEdges());
+        edges.sort(Edge.BY_NODE);
 
         // Add edges in sorted order by label then nodes. Also accumulate weight.
         int totalWeight = 0;
-        for (Edge edge : list) {
+        for (Edge edge : edges) {
             result.append(
                 String.format("%s\t%s\t%s\t%d\n",
                     edge.getLabel(), 
@@ -102,10 +94,13 @@ public class Tp3 {
 
     }
 
+    // Helper function to parse edges from the text input.
     public static Edge parseEdge(String line) {
         String[] parts = line.trim().split("\\s+");
 
-        // Impose start/end nodes in alphabetical order.
+        // Impose start/end nodes in alphabetical order. This helps achieve the 
+        // desired sorting for the output, though we note that this would not
+        // generalize to directed graphs.
         String start = parts[2];
         String end = parts[3];
         if (start.compareTo(end) > 0) {
