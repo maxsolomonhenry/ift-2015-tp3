@@ -4,8 +4,6 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.TreeMap;
-import java.util.TreeSet;
 
 public class Tp3 {
 
@@ -46,7 +44,7 @@ public class Tp3 {
                     }
                     Edge edge = parseEdge(line);
 
-                    // Store edge (stores duplicates and checks for valid nodes).
+                    // Store edge (obj stores double edges, checks valid nodes).
                     graph.addEdge(edge);
                 }
                 case END -> {}
